@@ -1,58 +1,41 @@
-# Política de privacidad · GitHub Pages
+# Política de privacidad de Enable Sec.
 
-Página estática en español, adaptable a celular y lista para desplegar con GitHub Actions. No requiere Node.js, npm, claves ni compilación. Conserva el texto del borrador, incluidos los campos entre corchetes. No incluye scripts, formularios, fuentes externas ni analítica.
+## Actualizar GitHub Pages
 
-## Publicar
+El archivo `index.html` es autónomo: incluye los estilos y no requiere JavaScript, compilación ni dependencias.
 
-1. Crea en GitHub un repositorio vacío llamado `privacidad-bot`. Puedes hacerlo público para usar GitHub Pages con GitHub Free.
-2. Descomprime este ZIP. Abre una terminal dentro de la carpeta `privacidad-bot`, donde están `README.md`, `site` y `.github`.
-3. Ejecuta lo siguiente, reemplazando `TU_USUARIO`:
+1. Copia `index.html` a la raíz de tu repositorio `enable-Sec/policy`, reemplazando la política anterior.
+2. Reemplaza el workflow anterior por `.github/workflows/deploy-pages.yml` incluido aquí. Mantén un único workflow de despliegue de Pages.
+3. En Settings → Pages, elige GitHub Actions como origen.
+4. Haz commit en `main`. El workflow crea `_site`, copia solo el HTML y publica esa carpeta. No requiere que exista `site`.
+5. Comprueba el despliegue en Actions y abre https://enable-sec.github.io/policy/ .
 
-```bash
-git init -b main
-git add .
-git commit -m "Agregar política de privacidad y despliegue Pages"
-git remote add origin https://github.com/TU_USUARIO/privacidad-bot.git
-git push -u origin main
-```
+Sube los archivos extraídos, no el ZIP ni una carpeta adicional. El workflow debe estar exactamente en `.github/workflows/deploy-pages.yml` y el HTML en `index.html`.
 
-4. En el repositorio, entra en **Settings → Pages → Build and deployment → Source** y selecciona **GitHub Actions**.
-5. En **Actions → Publicar política en GitHub Pages → Run workflow**, selecciona `main` y ejecútalo. Si el primer push falló porque aún no habías activado Pages, vuelve a ejecutar el workflow.
-6. Espera que el job termine en verde. La URL aparecerá en el despliegue y en Settings → Pages. Normalmente será `https://TU_USUARIO.github.io/privacidad-bot/`.
-7. Copia esa URL en el campo **URL de la política de privacidad** de Meta Developers.
+## Alcance de esta versión
 
-Para subir por la interfaz web, incluye el contenido de la carpeta, no el ZIP. Asegúrate de que `.github/workflows/deploy-pages.yml` exista en esa ruta exacta; si el explorador omite carpetas ocultas, usa Git o crea el archivo desde GitHub. `site` y `.github` deben quedar en la raíz del repositorio, sin una carpeta `privacidad-bot` adicional.
+Redactada a partir del funcionamiento declarado: recibir audio por WhatsApp, resumirlo con IA y enviar el texto al abogado o persona natural previamente identificada, sin almacenamiento propio posterior. Se mantiene Enable Sec. y contacto@enablesec.com según la información proporcionada. No se ha confirmado que Enable Sec. sea la razón social: antes de la versión definitiva, completa la identificación legal real de la empresa en la sección 1 (razón social, RUT y domicilio/contacto que corresponda).
 
-## Editar
+La página no implementa los controles del bot. La afirmación de no almacenamiento exige que audios, textos, números e identificadores tampoco persistan en ejecuciones de n8n, errores, temporales, colas persistentes, logs, respaldos ni telemetría. Debe cumplirse también en ejecuciones fallidas. No hemos auditado la VM ni el flujo.
 
-Edita `site/index.html` y reemplaza todas las apariciones de:
+La API de xAI tiene condiciones propias de retención; no se asume ZDR activo. Verifica la modalidad y los endpoints de audio/texto que realmente utilices. Si usas Groq en vez de Grok o un proveedor adicional de transcripción, actualiza la sección 6 antes de publicar.
 
-- `[NOMBRE DEL BOT]`
-- `[CORREO DE CONTACTO]`
-- `[NOMBRE DEL ABOGADO O ESTUDIO]`
-- `[PROVEEDOR DE ALOJAMIENTO]`
+El destinatario debe identificarse en el bot antes del procesamiento. La política no da autorización para remitir consultas a personas indeterminadas. Implementa el aviso y la autorización descritos antes de solicitar el audio. El correo de privacidad y la copia recibida por el destinatario tienen un ciclo distinto al procesamiento temporal del bot.
 
-Actualiza también la fecha visible y el atributo `datetime` al cambiar la política. Conservamos los campos pendientes por solicitud; completa los datos antes de usar la política como versión definitiva. La promesa de eliminación requiere que n8n, los temporales, registros y respaldos estén configurados de forma coherente. La página por sí sola no cambia el tratamiento del bot.
+## Aviso sugerido para el bot (adaptar al flujo)
 
-Cada push a `main` vuelve a publicar automáticamente. Si cambias el nombre de la rama, ajusta `branches` y la condición `if` en el workflow. No hacen falta PAT ni secretos manuales: usa el token automático de GitHub Actions y OIDC.
+Soy el asistente automatizado de Enable Sec. Usaré IA para resumir tu audio y enviar el texto a [NOMBRE DEL DESTINATARIO]. Enable Sec. no conserva el audio ni el resumen después de procesar el envío; WhatsApp, el proveedor de IA y el destinatario pueden conservar información según lo explicado en nuestra política: https://enable-sec.github.io/policy/ . ¿Autorizas este procesamiento y envío? Responde Acepto para continuar.
 
-## Vista local
+No envíes esta plantilla sin sustituir el destinatario. Este aviso no se muestra en la página pública.
 
-Abre `site/index.html` en tu navegador, o ejecuta:
+## Revisión
 
-```bash
-python -m http.server 8080 --directory site
-```
+Es un borrador ajustado al funcionamiento declarado, no una certificación legal ni una auditoría técnica. El despliegue en GitHub no se ejecutó desde esta conversación. No se agregaron herramientas analíticas, formularios ni almacenamiento en el navegador. GitHub Pages puede tratar registros técnicos propios al servir la página.
 
-Visita `http://localhost:8080`.
+Fuentes consultadas el 24 de octubre de 2026:
+- https://docs.x.ai/developers/faq/security
+- https://www.bcn.cl/leychile/navegar?idNorma=141599&idVersion=2012-02-17
 
-## Archivos
+## Revisión
 
-- `site/index.html`: política completa, disponible sin JavaScript.
-- `site/styles.css`: estilos responsive y de impresión.
-- `site/.nojekyll`: sitio estático.
-- `.github/workflows/deploy-pages.yml`: despliegue mediante acciones oficiales.
-
-Solo se publica el contenido de `site`; README y workflow no forman parte del sitio desplegado. El despliegue real debe comprobarse en tu repositorio: este paquete no se ha conectado a una cuenta de GitHub.
-
-Documentación: https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+Siete secciones. Aviso y autorización redactados como comportamiento efectivo del bot: deben implementarse antes de publicar. Eliminación propia diferenciada de proveedores y destinatarios. Identificación legal de Enable Sec. pendiente, sin cambios en la sección 1.
